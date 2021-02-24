@@ -122,11 +122,12 @@ class Signal:
         M = np.exp(1j * PI2 * args)
         return M
 
-    def actual_DFT(self, ys):
-        N = len(ys)
-        M = self.DFT_matrix_synthesis(N)
-        amps = M.conj().transpose().dot(ys)
-        return amps
+    def FFT(self, signal): 
+        N = len(signal)
+        odd = signal[1::2]
+        even = signal[::2]
+        W = np.exp(-2j*np.pi*np.arange(N)/N)
+        return np.tile(np.fft.fft(even),2) + W*np.tile(np.fft.fft(odd),2)
 
     def cos_synthesis(self, amps, freqs, ts):
         args = np.outer(ts, freqs)
