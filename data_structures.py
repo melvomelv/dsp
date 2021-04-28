@@ -1,4 +1,4 @@
-class node():
+class node:
 
     def __init__(self, value):
         self.value = value
@@ -6,7 +6,7 @@ class node():
 
 
 
-class linked_list():
+class linked_list:
 
     def __init__(self, node):
         self.head = node
