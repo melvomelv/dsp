@@ -1,54 +1,74 @@
 import numpy as np
-import scipy.signal
-import matplotlib.pyplot as plt
 
 
-class filters: 
+class filters:
+    
+    def low_pass_hamming(cutoff, N):
+  
+        n = np.arange(N)
+        filt = 2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.hamming(N)
+    
+        return filt*window
 
-    def LPF_ham(self, fs = 'Sampling Rate', fc = 'Cutoff Frequency', N = 'Filter Length, Coefficients'):
+    def low_pass_bartlett(cutoff, N):
+    
+        n = np.arange(N)
+        filt = 2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.bartlett(N)
+    
+        return filt*window
 
-        #compute Sinc Filter
-        h = np.sinc(2* fc/fs * (np.arange(N) - (N-1)/2))
+    def low_pass_blackman(cutoff, N):
+    
+        n = np.arange(N)
+        filt = 2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.blackman(N)
+    
+        return filt*window
 
-        #apply window of length N, these are the filter coefficients
-        h *= np.hamming(N)
+    def low_pass_hanning(cutoff, N):
+        
+        n = np.arange(N)
+        filt = 2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.hanning(N)
+    
+        return filt*window
 
-        #Normalze, unity gain
-        h /= np.sum(h)
+    def high_pass_hamming(cutoff, N):
 
-        return h
+        n = np.arange(N)
+        filt = np.sinc(n-N/2)-2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.hamming(N)
+    
+        return filt*window
 
-    def LPF_black(self, fs = 'Sampling Rate', fc = 'Cutoff Frequency', N = 'Filter Length, Coefficients'):
+    def high_pass_bartlett(cutoff, N):
+ 
+        n = np.arange(N)
+        filt = np.sinc(n-N/2)-2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.bartlett(N)
+    
+        return filt*window
 
-        h = np.sinc(2* fc/fs * (np.arange(N) - (N-1)/2))
+    def high_pass_blackman(cutoff, N):
+  
+        n = np.arange(N)
+        filt = np.sinc(n-N/2)-2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.blackman(N)
+    
+        return filt*window
 
-        #apply window of length N, these are the filter coefficients
-        h *= np.blackman(N)
+    def high_pass_hanning(cutoff, N):
 
-        #Normalze, unity gain
-        h /= np.sum(h)
+        n = np.arange(N)
+        filt = np.sinc(n-N/2)-2*cutoff*np.sinc(2*cutoff*(n-N/2))
+        window = np.hanning(N)
+    
+        return filt*window
 
-        return h
+    def band_pass_filter(hpf, lpf):
+        return np.convolve(hpf, lpf)
 
-    def LPF_kaiser(self, fs = 'Sampling Rate', fc = 'Cutoff Frequency', N = 'Filter Length, Coefficients', beta = 'Kaiser Window Beta'):
-
-        #calculate Sinc Filter
-        h = np.sinc(2 * fL / fS * (np.arange(N) - (N - 1) / 2))
-
-        # Apply window.
-        h *= np.kaiser(N, beta)
-
-        # Normalize to get unity gain.
-        h /= np.sum(h)
-
-        return h
-
-    def LPF_rect(self, fs = 'Sampling Rate', fc = 'Cutoff Frequency', N = 'Filter Length, Coefficients'):
-
-        #calculate Sinc Filter
-        h = np.sinc(2 * fL / fS * (np.arange(N) - (N - 1) / 2))
-
-        # Normalize to get unity gain.
-        h /= np.sum(h)
-
-        return h
+    def band_stop_filter(lpf, hpf):
+        return lpf+hpf
