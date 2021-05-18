@@ -48,3 +48,16 @@ class linked_list:
         self.head = None
         self.tail = None
         print('list cleared')
+        
+        
+class data_science:
+    
+    def lin_reg(X, Y):
+        
+        #Least squares linear regression
+        
+        m = (len(X)*np.dot(X,Y)-(np.sum(X)*np.sum(Y)))/((len(X)*np.sum([num**2 for num in X]))-(np.sum(X)**2))
+        b = (np.sum(Y) - m*np.sum(X))/len(X)
+    
+        return [float(m)*x+b for x in X]
+        
