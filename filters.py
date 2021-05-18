@@ -72,3 +72,14 @@ class filters:
 
     def band_stop_filter(lpf, hpf):
         return lpf+hpf
+    
+    def decimate(signal, factor):
+        
+        #decimate steps: 
+        #1: generate signal
+        #2: take the FT of the signal
+        #3: apply decimate function
+        signal = low_pass(signal, (len(signal)/factor)/2)
+        signal = np.fft.ifft(signal)
+        
+        return signal[::factor]
